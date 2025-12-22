@@ -31,27 +31,22 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         Map<String, String> response = new HashMap<>();
-        try {
-            // Upload file; get key
-            String key = s3Service.uploadFile(bucketName, file);
 
-            // Generate temp url
-            String signedUrl = s3Service.createPresignedGetUrl(bucketName, key);
+        // Upload file; get key
+        String key = s3Service.uploadFile(bucketName, file);
 
-            // Save the metadata
-            Image image = new Image(file.getOriginalFilename(), signedUrl, key);
-            imageRepository.save(image); // SQL insert
+        // Generate temp url
+        String signedUrl = s3Service.createPresignedGetUrl(bucketName, key);
 
-            response.put("url", signedUrl);
-            response.put("message", "Upload successful");
-            return ResponseEntity.ok(response);
-        }
-        catch (IOException e) {
-            response.put("error", "Failed to upload image: " + e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
+        // Save the metadata
+        Image image = new Image(file.getOriginalFilename(), signedUrl, key);
+        imageRepository.save(image); // SQL insert
+
+        response.put("url", signedUrl);
+        response.put("message", "Upload successful");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
