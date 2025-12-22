@@ -34,6 +34,11 @@ function App() {
         event.preventDefault();
         if (!file) return;
 
+        if (file.size > 2 * 1024 * 1024) { // 2MB
+            alert("File is too large! Please upload an image smaller than 2MB.");
+            return; // Stop
+        }
+
         setUploading(true);
         const formData = new FormData();
         formData.append("file", file);
@@ -44,15 +49,19 @@ function App() {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            // Refresh the list after successful upload
             await fetchImages();
-            setFile(null); // Reset file input
-            // Reset file input value manually via DOM if needed, or simple reset:
+            setFile(null);
             event.target.reset();
         }
         catch (error) {
             console.error("Error uploading file:", error);
-            alert("Upload failed!");
+
+            // NEW: Check if the server sent a specific message
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(`Error: ${error.response.data.message}`);
+            } else {
+                alert("Upload failed! Server might be down.");
+            }
         }
         finally {
             setUploading(false);
