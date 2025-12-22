@@ -13,6 +13,10 @@ public class Image {
     private String fileName;
 
     @Column(nullable = false)
+    private String s3Key;
+
+    @Column(nullable = false,
+            length = 1024)
     private String url;
 
     private LocalDateTime createdAt;
@@ -20,8 +24,9 @@ public class Image {
     public Image() {}
 
     // Hibernate will map this to snake_case in Postgres
-    public Image(String fileName, String url) {
+    public Image(String fileName, String s3Key, String url) {
         this.fileName = fileName;
+        this.s3Key = s3Key;
         this.url = url;
         this.createdAt = LocalDateTime.now();
     }
@@ -41,6 +46,14 @@ public class Image {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getS3Key() {
+        return s3Key;
+    }
+
+    public void setS3Key(String s3Key) {
+        this.s3Key = s3Key;
     }
 
     public String getUrl() {

@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -18,15 +19,16 @@ public class S3Service {
     }
 
     public String uploadFile(String bucketName, MultipartFile file) throws IOException {
-        // Unique key to prevent overwriting
         String key = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
-        // File stream uploads directly to S3
         try (InputStream inputStream = file.getInputStream()) {
             s3Template.upload(bucketName, key, inputStream);
         }
 
-        // Return the URL to save into the database later
-        return s3Template.download(bucketName, key).getURL().toString();
+        return key;
+    }
+
+    public String createPresignedGetUrl(String bucketName, String key) {
+        return s3Template.createSignedGetURL(bucketName, key, Duration.ofMinutes(60)).toString();
     }
 }

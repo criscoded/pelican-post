@@ -34,14 +34,17 @@ public class ImageController {
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         Map<String, String> response = new HashMap<>();
         try {
-            // Call our service; uploads file
-            String imageUrl = s3Service.uploadFile(bucketName, file);
+            // Upload file; get key
+            String key = s3Service.uploadFile(bucketName, file);
+
+            // Generate temp url
+            String signedUrl = s3Service.createPresignedGetUrl(bucketName, key);
 
             // Save the metadata
-            Image image = new Image(file.getOriginalFilename(), imageUrl);
+            Image image = new Image(file.getOriginalFilename(), signedUrl, key);
             imageRepository.save(image); // SQL insert
 
-            response.put("url", imageUrl);
+            response.put("url", signedUrl);
             response.put("message", "Upload successful");
             return ResponseEntity.ok(response);
         }
@@ -52,7 +55,15 @@ public class ImageController {
     }
 
     @GetMapping
-    public List<Image> getImages() {
-        return imageRepository.findAll();
+    public List<Image> getAllImages() {
+        List<Image> images = imageRepository.findAll();
+
+        // Loop and refresh the signed URLs
+        for (Image image : images) {
+            String signedUrl = s3Service.createPresignedGetUrl(bucketName, image.getS3Key());
+            image.setUrl(signedUrl); // Update the object in memory before returning (don't save to DB)
+        }
+
+        return images;
     }
 } // End ImageController
