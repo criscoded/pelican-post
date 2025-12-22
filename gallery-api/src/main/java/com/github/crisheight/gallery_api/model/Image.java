@@ -10,13 +10,17 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false,
+            unique = true,
+            columnDefinition = "TEXT")
     private String fileName;
 
-    @Column(nullable = false)
+    @Column(nullable = false,
+            columnDefinition = "TEXT")
     private String s3Key;
 
     @Column(nullable = false,
-            length = 1024)
+            columnDefinition = "TEXT")
     private String url;
 
     private LocalDateTime createdAt;
@@ -24,10 +28,10 @@ public class Image {
     public Image() {}
 
     // Hibernate will map this to snake_case in Postgres
-    public Image(String fileName, String s3Key, String url) {
+    public Image(String fileName, String url, String s3Key) {
         this.fileName = fileName;
-        this.s3Key = s3Key;
         this.url = url;
+        this.s3Key = s3Key;
         this.createdAt = LocalDateTime.now();
     }
 
