@@ -1,7 +1,6 @@
 package com.github.crisheight.gallery_api.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "images")
@@ -10,69 +9,36 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,
-            unique = true,
-            columnDefinition = "TEXT")
-    private String fileName;
+    private String originalFileName;
 
-    @Column(nullable = false,
-            columnDefinition = "TEXT")
+    @Column(unique = true, nullable = false)
     private String s3Key;
 
-    @Column(nullable = false,
-            columnDefinition = "TEXT")
+    private String contentType;
     private String url;
-
-    private LocalDateTime createdAt;
 
     public Image() {}
 
     // Hibernate will map this to snake_case in Postgres
-    public Image(String fileName, String url, String s3Key) {
-        this.fileName = fileName;
-        this.url = url;
+    public Image(String originalFileName, String s3Key, String contentType, String url) {
+        this.originalFileName = originalFileName;
         this.s3Key = s3Key;
-        this.createdAt = LocalDateTime.now();
+        this.contentType = contentType;
+        this.url = url;
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getOriginalFileName() { return originalFileName; }
+    public void setOriginalFileName(String originalFileName) { this.originalFileName = originalFileName; }
 
-    public String getFileName() {
-        return fileName;
-    }
+    public String getS3Key() { return s3Key; }
+    public void setS3Key(String s3Key) { this.s3Key = s3Key; }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+    public String getContentType() { return contentType; }
+    public void setContentType(String contentType) { this.contentType = contentType; }
 
-    public String getS3Key() {
-        return s3Key;
-    }
-
-    public void setS3Key(String s3Key) {
-        this.s3Key = s3Key;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
 } // End Image
