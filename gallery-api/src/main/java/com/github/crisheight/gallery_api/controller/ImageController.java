@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/images")
-@CrossOrigin(origins = "*")
 public class ImageController {
 
     private final ImageService imageService;
@@ -29,5 +28,11 @@ public class ImageController {
     public ResponseEntity<Image> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         Image savedImage = imageService.uploadImage(file);
         return ResponseEntity.ok(savedImage);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteImage(@PathVariable Long id) throws IOException {
+        imageService.deleteImage(id);
+        return ResponseEntity.noContent().build(); // Returns HTTP 204 (Success, No Body)
     }
 }
