@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class ImageService {
 
@@ -34,6 +36,15 @@ public class ImageService {
 
         Image image = new Image(originalFileName, s3Key, file.getContentType(), imageUrl);
         return imageRepository.save(image);
+    }
+
+    public void deleteImage(Long id) throws IOException {
+        Image image = imageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Image not found with id: " + id));
+
+        s3Service.deleteFile(image.getS3Key());
+
+        imageRepository.delete(image);
     }
 
     public List<Image> getAllImages() {
