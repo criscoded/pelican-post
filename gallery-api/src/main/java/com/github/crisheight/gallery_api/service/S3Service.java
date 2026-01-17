@@ -22,7 +22,11 @@ public class S3Service {
 
 
     public String uploadFile(String key, MultipartFile file) throws IOException {
-        S3Resource resource = s3Template.store(bucketName, key, file.getResource());
+        S3Resource resource = s3Template.upload(bucketName, key, file.getInputStream());
         return resource.getURL().toString();
+    }
+
+    public void deleteFile(String key) throws IOException {
+        s3Template.deleteObject(bucketName, key);
     }
 }
