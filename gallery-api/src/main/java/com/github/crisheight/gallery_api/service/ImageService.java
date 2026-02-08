@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class ImageService {
 
@@ -38,16 +36,22 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public void deleteImage(Long id) throws IOException {
+    public void deleteImage(Long id) {
         Image image = imageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Image not found with id: " + id));
 
         s3Service.deleteFile(image.getS3Key());
-
         imageRepository.delete(image);
     }
 
     public List<Image> getAllImages() {
-        return imageRepository.findAll();
+        List<Image> imageList = imageRepository.findAll();
+
+        for(Image image : imageList) {
+            String presignedUrl = s3Service.createPresignedUrl(image.getS3Key());
+            image.setUrl(presignedUrl);
+        }
+
+        return imageList;
     }
-}
+} // End ImageService
