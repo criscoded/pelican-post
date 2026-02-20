@@ -91,9 +91,9 @@ While Next.js offers excellent speed, the recent security landscape (specificall
   
 * Security Isolation: The backend serves as a strict gatekeeper, mitigating risks associated with server-side execution vulnerabilities
 
-Maintainability: Following the SOLID principles in Java ensures the codebase remains clean as features grow
+* Maintainability: Following the SOLID principles in Java ensures the codebase remains clean as features grow
 
-Industry Standard: Demonstrates proficiency in the standard enterprise stack used by large-scale technology companies
+* Industry Standard: Demonstrates proficiency in the standard enterprise stack used by large-scale technology companies
 
 # API Documentation
 
