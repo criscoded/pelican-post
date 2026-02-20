@@ -7,51 +7,51 @@ A modern rewrite of my previous T3-based gallery, transitioning to a decoupled a
 
 The application is split into two distinct layers:
 
-* Backend (Spring Boot): A robust RESTful API handling business logic, data persistence, and security.
+* Backend (Spring Boot): A robust RESTful API handling business logic, data persistence, and security
 
-* Frontend (React): A dynamic, client-side interface that consumes the Spring API, providing a seamless user experience.
+* Frontend (React): A dynamic, client-side interface that consumes the Spring API, providing a seamless user experience
 
 # Tech Stack
 
 **Backend**
 
-* Spring Boot: Core application framework.
+* Spring Boot: Core application framework
 
-* Spring Data JPA: For streamlined database interactions and ORM.
+* Spring Data JPA: For streamlined database interactions and ORM
 
-* Spring Security: Enterprise-level authentication and authorization.
+* Spring Security: Enterprise-level authentication and authorization
 
-* PostgreSQL: Relational database for persistent storage.
+* PostgreSQL: Relational database for persistent storage
 
-* Maven: Dependency management and build automation.
+* Maven: Dependency management and build automation
 
 **Frontend**
 
-* React: Component-based UI development.
+* React: Component-based UI development
 
-* Axios: Handling asynchronous HTTP requests to the backend.
+* Axios: Handling asynchronous HTTP requests to the backend
 
-* React Router: Managing client-side navigation.
+* React Router: Managing client-side navigation
 
-* Tailwind CSS: Utility-first styling for a modern look.
+* Tailwind CSS: Utility-first styling for a modern look
 
 # Key Features
 
-* Decoupled Design: Complete separation of the client and server, allowing for independent scaling and maintenance.
+* Decoupled Design: Complete separation of the client and server, allowing for independent scaling and maintenance
 
-* RESTful API: Clean, documented endpoints for gallery operations (CRUD).
+* RESTful API: Clean, documented endpoints for gallery operations (CRUD)
 
-* Enhanced Security: Leveraging Spring Security to safeguard image data and user sessions.
+* Enhanced Security: Leveraging Spring Security to safeguard image data and user sessions
 
-* Persistence: Fully integrated PostgreSQL database managed via JPA/Hibernate.
+* Persistence: Fully integrated PostgreSQL database managed via JPA/Hibernate
 
 # Getting Started
 
 **Backend Setup**
 
-1. Navigate to the /backend directory.
+1. Navigate to the /backend directory
 
-2. Configure your PostgreSQL settings in src/main/resources/application.properties.
+2. Configure your PostgreSQL settings in src/main/resources/application.properties
 
 3. Run the application:
 
@@ -63,7 +63,7 @@ The application is split into two distinct layers:
 
 **Frontend Setup**
 
-1. Navigate to the /frontend directory.
+1. Navigate to the /frontend directory
 
 2. Install dependencies:
 
@@ -83,11 +83,17 @@ npm start
 
 While Next.js offers excellent speed, the recent security landscape (specifically regarding RSCs) led to this pivot. By using Spring Boot, the project gains:
 
-* Type Safety: Strong typing across the entire backend.
+* Type Safety: Strong typing across the entire backend
 
-* Mature Ecosystem: Proven libraries for security and database management.
+* Mature Ecosystem: Proven libraries for security and database management
 
-* Better Portability: A clear separation that allows the frontend to be swapped or updated without affecting the core logic.
+* Better Portability: A clear separation that allows the frontend to be swapped or updated without affecting the core logic
+  
+* Security Isolation: The backend serves as a strict gatekeeper, mitigating risks associated with server-side execution vulnerabilities
+
+Maintainability: Following the SOLID principles in Java ensures the codebase remains clean as features grow
+
+Industry Standard: Demonstrates proficiency in the standard enterprise stack used by large-scale technology companies
 
 # API Documentation
 
