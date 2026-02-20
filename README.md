@@ -47,7 +47,7 @@ The application is split into two distinct layers:
 
 # Getting Started
 
-**Backend Setup**
+## Backend Setup
 
 1. Navigate to the /backend directory
 
@@ -61,7 +61,7 @@ The application is split into two distinct layers:
 ./mvnw spring-boot:run
 ```
 
-**Frontend Setup**
+## Frontend Setup 
 
 1. Navigate to the /frontend directory
 
@@ -78,6 +78,24 @@ npm install
 ```
 npm start
 ```
+## Configuration & Environment Variables
+To run this project locally, you will need to set up the following environment variables. You can create a .env file in the frontend directory and an application-local.properties (or use system env vars) for the backend.
+
+***Backend (Spring Boot)***
+
+These variables allow the application to connect to your database and secure the API
+
+* DB_URL: The JDBC connection string (e.g., jdbc:postgresql://localhost:5432/gallery_db)
+
+* DB_USERNAME: Your PostgreSQL username
+
+* DB_PASSWORD: Your PostgreSQL password
+
+* JWT_SECRET: A long, random string used to sign and verify JSON Web Tokens
+
+* AWS_BUCKET: Connection for image hosting services
+
+* CORS Configuration: Ensure that your Spring Boot WebMvcConfigurer is configured to allow requests from your frontend's origin (e.g., http://localhost:5173) during development
 
 # Why the switch from Next.js?
 
