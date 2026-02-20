@@ -88,3 +88,15 @@ While Next.js offers excellent speed, the recent security landscape (specificall
 * Mature Ecosystem: Proven libraries for security and database management.
 
 * Better Portability: A clear separation that allows the frontend to be swapped or updated without affecting the core logic.
+
+# API Documentation
+
+The backend exposes a structured REST API. Below are the primary endpoints:
+
+|Method|Endpoint|Description|
+|------|--------|-----------|
+|GET|/api/images|Fetch all gallery images|
+|GET|/api/images/{id}|Retrieve specific image metadata|
+|POST|/api/images/upload|Upload a new image (Authenticated)|
+|DELETE|/api/images/{id}|Remove an image from the gallery|
+|POST|/api/auth/login|User authentication and JWT issuance|
