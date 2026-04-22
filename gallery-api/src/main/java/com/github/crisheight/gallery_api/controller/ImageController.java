@@ -33,6 +33,6 @@ public class ImageController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable Long id) throws IOException {
         imageService.deleteImage(id);
-        return ResponseEntity.noContent().build(); // Returns HTTP 204 (Success, No Body)
+        return ResponseEntity.noContent().build(); // Returns HTTP 204
     }
 }
