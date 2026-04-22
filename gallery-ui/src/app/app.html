@@ -10,20 +10,23 @@
   </header>
 
   <main>
-    <div class="gallery-grid" *ngIf="images().length > 0; else emptyState">
-      <div class="image-card" *ngFor="let img of images()">
-        <img [src]="img.url" [alt]="img.originalFileName">
-        <div class="image-info">
-          <span class="file-name">{{ img.originalFileName }}</span>
-          <button class="delete-btn" (click)="deleteImage(img.id)">Delete</button>
+    @if(images().length > 0) {
+      <div class="gallery-grid">
+      @for(img of images(); track img.id) {
+        <div class="image-card">
+          <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+          <div class="image-info">
+            <span class="file-name">{{ img.originalFileName }}</span>
+            <button class="delete-btn" (click)="deleteImage(img.id)">Delete</button>
+          </div>
         </div>
+      }
       </div>
-    </div>
-
-    <ng-template #emptyState>
+    } @else {
       <div class="empty-msg">
         <p>No images found. Upload your first image!</p>
       </div>
-    </ng-template>
+    }
+
   </main>
 </div>
