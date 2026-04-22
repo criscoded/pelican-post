@@ -1,18 +1,18 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { ImageService } from './image.service';
 import { Image } from './models/image.model';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   private readonly imageService = inject(ImageService);
-  
+
   images = signal<Image[]>([]);
   uploading = signal(false);
 
@@ -46,7 +46,7 @@ export class App implements OnInit {
 
   deleteImage(id: number | undefined) {
     if (id === undefined) return;
-    
+
     if (confirm('Are you sure you want to delete this image?')) {
       this.imageService.deleteImage(id).subscribe({
         next: () => {
