@@ -30,10 +30,15 @@ public class ImageService {
         }
 
         String s3Key = uuid + extension;
-        String imageUrl = s3Service.uploadFile(s3Key, file);
+        s3Service.uploadFile(s3Key, file);
 
-        Image image = new Image(originalFileName, s3Key, file.getContentType(), imageUrl);
-        return imageRepository.save(image);
+        var image = new Image(originalFileName, s3Key, file.getContentType(), null);
+        var savedImage = imageRepository.save(image);
+
+        String presignedUrl = s3Service.createPresignedUrl(savedImage.getS3Key());
+        savedImage.setUrl(presignedUrl);
+
+        return savedImage;
     }
 
     public void deleteImage(Long id) {
