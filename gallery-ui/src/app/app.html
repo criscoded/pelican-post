@@ -14,7 +14,7 @@
       <div class="gallery-grid">
       @for(img of images(); track img.id) {
         <div class="image-card">
-          <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+          <img [src]="img.url" [alt]="img.originalFileName">
           <div class="image-info">
             <span class="file-name">{{ img.originalFileName }}</span>
             <button class="delete-btn" (click)="deleteImage(img.id)">Delete</button>
