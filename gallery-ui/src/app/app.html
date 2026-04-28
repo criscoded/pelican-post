@@ -14,7 +14,9 @@
       <div class="gallery-grid">
       @for(img of images(); track img.id) {
         <div class="image-card">
-          <img [src]="img.url" [alt]="img.originalFileName">
+          <div class="image-container">
+            <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+          </div>
           <div class="image-info">
             <span class="file-name">{{ img.originalFileName }}</span>
             <button class="delete-btn" (click)="deleteImage(img.id)">Delete</button>
@@ -27,6 +29,5 @@
         <p>No images found. Upload your first image!</p>
       </div>
     }
-
   </main>
 </div>
