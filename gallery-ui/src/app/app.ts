@@ -1,14 +1,14 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { ImageService } from './image.service';
 import { Image } from './models/image.model';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [NgOptimizedImage],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App implements OnInit {
   private readonly imageService = inject(ImageService);
