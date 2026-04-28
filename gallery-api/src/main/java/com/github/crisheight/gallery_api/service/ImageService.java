@@ -35,8 +35,7 @@ public class ImageService {
         var image = new Image(originalFileName, s3Key, file.getContentType(), null);
         var savedImage = imageRepository.save(image);
 
-        String presignedUrl = s3Service.createPresignedUrl(savedImage.getS3Key());
-        savedImage.setUrl(presignedUrl);
+        savedImage.setUrl("https://d3kygt2aqhuo2y.cloudfront.net/" + savedImage.getS3Key());
 
         return savedImage;
     }
@@ -53,8 +52,7 @@ public class ImageService {
         List<Image> imageList = imageRepository.findAll();
 
         for(Image image : imageList) {
-            String presignedUrl = s3Service.createPresignedUrl(image.getS3Key());
-            image.setUrl(presignedUrl);
+            image.setUrl("https://d3kygt2aqhuo2y.cloudfront.net/" + image.getS3Key());
         }
 
         return imageList;
