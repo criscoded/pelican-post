@@ -2,6 +2,8 @@ package com.github.crisheight.gallery_api.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "images")
 public class Image {
@@ -28,11 +30,9 @@ public class Image {
     }
 
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,7 +40,6 @@ public class Image {
     public String getOriginalFileName() {
         return originalFileName;
     }
-
     public void setOriginalFileName(String originalFileName) {
         this.originalFileName = originalFileName;
     }
@@ -48,7 +47,6 @@ public class Image {
     public String getS3Key() {
         return s3Key;
     }
-
     public void setS3Key(String s3Key) {
         this.s3Key = s3Key;
     }
@@ -56,7 +54,6 @@ public class Image {
     public String getContentType() {
         return contentType;
     }
-
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
@@ -64,8 +61,19 @@ public class Image {
     public String getUrl() {
         return url;
     }
-
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Image image)) return false;
+        return Objects.equals(s3Key, image.s3Key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(s3Key);
     }
 } // End Image
