@@ -1,33 +1,43 @@
-<div class="container">
-  <header>
-    <h1>Cloud Spark Gallery</h1>
-    <div class="upload-section">
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" #fileInput hidden>
-      <button (click)="fileInput.click()" [disabled]="uploading()">
-        {{ uploading() ? 'Uploading...' : 'Upload Image' }}
-      </button>
-    </div>
-  </header>
+<div class="app-wrapper">
+  <div class="container">
+    <header>
+      <h1><i class="ph-fill ph-cloud-lightning"></i> Cloud Spark Gallery</h1>
+      <div class="upload-section">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" #fileInput hidden>
+        <button class="upload-btn" (click)="fileInput.click()" [disabled]="uploading()">
+          @if(uploading()) {
+            <i class="ph ph-spinner-gap ph-spin"></i> Uploading...
+          } @else {
+            <i class="ph-bold ph-upload-simple"></i> Upload Image
+          }
+        </button>
+      </div>
+    </header>
 
-  <main>
-    @if(images().length > 0) {
-      <div class="gallery-grid">
-      @for(img of images(); track img.id) {
-        <div class="image-card">
-          <div class="image-container">
-            <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+    <main>
+      @if(images().length > 0) {
+        <div class="gallery-grid">
+        @for(img of images(); track img.id) {
+          <div class="image-card">
+            <div class="image-container">
+              <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+              <div class="image-overlay"></div>
+            </div>
+            <div class="image-info">
+              <span class="file-name" [title]="img.originalFileName">{{ img.originalFileName }}</span>
+              <button class="delete-btn" (click)="deleteImage(img.id)" title="Delete Image" aria-label="Delete Image">
+                <i class="ph-bold ph-trash"></i>
+              </button>
+            </div>
           </div>
-          <div class="image-info">
-            <span class="file-name">{{ img.originalFileName }}</span>
-            <button class="delete-btn" (click)="deleteImage(img.id)">Delete</button>
-          </div>
+        }
+        </div>
+      } @else {
+        <div class="empty-msg">
+          <i class="ph-duotone ph-image"></i>
+          <p>No images found.</p>
         </div>
       }
-      </div>
-    } @else {
-      <div class="empty-msg">
-        <p>No images found. Upload your first image!</p>
-      </div>
-    }
-  </main>
+    </main>
+  </div>
 </div>
