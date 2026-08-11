@@ -2,7 +2,7 @@
   <div class="container">
     <header>
       <div class="header-top">
-        <h1><i class="ph-fill ph-envelope-simple"></i> Pelican Post</h1>
+        <h1><img src="assets/mail.jpg" alt="Mail" class="title-icon"> Pelican Post</h1>
         <button class="theme-toggle" (click)="toggleNightMode()">
           @if(isNightMode()) {
             <i class="ph-fill ph-moon"></i> Night Shift (Phyllis)
@@ -78,7 +78,7 @@
               <div class="card-face card-front">
                 <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
               </div>
-              <div class="card-face card-back" [class]="'theme-' + (img.theme || 'nook')">
+              <div class="card-face card-back" [class]="'theme-' + (img.theme || 'airmail')">
                 <div class="postmark"></div>
                 <p class="note-text">{{ img.note || 'No message provided.' }}</p>
                 <button class="delete-btn" (click)="deleteImage(img.id, $event)" title="Trash Mail" aria-label="Trash Mail">

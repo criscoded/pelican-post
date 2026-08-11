@@ -28,14 +28,16 @@ export class App implements OnInit {
 
   uploadForm = this.fb.group({
     note: ['', Validators.maxLength(200)],
-    theme: ['nook']
+    theme: ['airmail']
   });
 
   themes = [
-    { id: 'nook', label: 'Nook Inc.' },
-    { id: 'gyroid', label: 'Gyroid' },
-    { id: 'museum', label: 'Blathers Museum' },
-    { id: 'able', label: 'Able Sisters' }
+    { id: 'airmail', label: 'Airmail Paper' },
+    { id: 'mushroom', label: 'Mushroom Paper' },
+    { id: 'star', label: 'Star Paper' },
+    { id: 'melody', label: 'Melody Paper' },
+    { id: 'nook', label: 'Nook Paper' },
+    { id: 'town-hall', label: 'Town-Hall Paper' }
   ];
 
   ngOnInit() {
@@ -66,7 +68,7 @@ export class App implements OnInit {
   clearSelection() {
     this.selectedFile.set(null);
     this.selectedFilePreview.set(null);
-    this.uploadForm.reset({ theme: 'nook', note: '' });
+    this.uploadForm.reset({ theme: 'airmail', note: '' });
   }
 
   upload() {
@@ -76,7 +78,7 @@ export class App implements OnInit {
     this.uploading.set(true);
     const formVal = this.uploadForm.value;
     
-    this.imageService.uploadImage(file, formVal.note || '', formVal.theme || 'nook').subscribe({
+    this.imageService.uploadImage(file, formVal.note || '', formVal.theme || 'airmail').subscribe({
       next: (newImage) => {
         this.images.update(prev => [...prev, newImage]);
         this.uploading.set(false);

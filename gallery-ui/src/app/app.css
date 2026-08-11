@@ -94,30 +94,20 @@
   transition: all 0.4s ease;
 }
 
-.avatar.pete {
-  background: linear-gradient(135deg, #a7f3d0, #34d399);
-  position: relative;
+.title-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.avatar.pete::after {
-  content: '🐦';
-  font-size: 4rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+.avatar.pete {
+  background-image: url('/assets/pete.jpg');
 }
 
 .avatar.phyllis {
-  background: linear-gradient(135deg, #fbcfe8, #f472b6);
-  position: relative;
-}
-.avatar.phyllis::after {
-  content: '🦉';
-  font-size: 4rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  background-image: url('/assets/phyllis.jpg');
 }
 
 .upload-section {
@@ -303,18 +293,36 @@
 }
 
 /* Themes */
+.theme-airmail {
+  background: white;
+  border: 12px solid #fff;
+  border-image: repeating-linear-gradient(-45deg, #ef4444 0, #ef4444 10px, transparent 10px, transparent 20px, #3b82f6 20px, #3b82f6 30px, transparent 30px, transparent 40px) 12;
+}
+.theme-mushroom {
+  background: #f87171;
+  background-image: radial-gradient(circle at 20px 20px, #fff 10px, transparent 11px),
+                    radial-gradient(circle at 50px 50px, #fff 10px, transparent 11px);
+  background-size: 80px 80px;
+  color: #fff;
+}
+.theme-star {
+  background: #1e1b4b;
+  background-image: radial-gradient(circle at 20px 20px, #fde047 3px, transparent 4px),
+                    radial-gradient(circle at 60px 40px, #fde047 2px, transparent 3px);
+  background-size: 100px 100px;
+  color: #fff;
+}
+.theme-melody {
+  background: #fdf2f8;
+  background-image: repeating-linear-gradient(transparent, transparent 15px, #fbcfe8 15px, #fbcfe8 16px);
+}
 .theme-nook {
   background: repeating-linear-gradient(45deg, #dcfce7, #dcfce7 15px, #bbf7d0 15px, #bbf7d0 30px);
 }
-.theme-gyroid {
-  background: repeating-radial-gradient(circle, #fef08a, #fef08a 15px, #fde047 15px, #fde047 30px);
-}
-.theme-museum {
-  background: linear-gradient(135deg, #dbeafe, #93c5fd);
-}
-.theme-able {
-  background: repeating-linear-gradient(to right, #fecaca, #fecaca 20px, #fca5a5 20px, #fca5a5 40px);
-  color: #7f1d1d;
+.theme-town-hall {
+  background: #f0fdf4;
+  border-color: #15803d;
+  color: #14532d;
 }
 
 .note-text {
