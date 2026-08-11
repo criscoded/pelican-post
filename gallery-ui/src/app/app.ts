@@ -1,23 +1,49 @@
 import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ImageService } from './image.service';
 import { Image } from './models/image.model';
 
 @Component({
   selector: 'app-root',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, ReactiveFormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.dark-theme]': 'isNightMode()'
+  }
 })
 export class App implements OnInit {
   private readonly imageService = inject(ImageService);
+  private readonly fb = inject(FormBuilder);
 
   images = signal<Image[]>([]);
   uploading = signal(false);
+  isNightMode = signal(false);
+  selectedFile = signal<File | null>(null);
+  selectedFilePreview = signal<string | null>(null);
+  
+  flippedCards = signal<Set<number>>(new Set());
+
+  uploadForm = this.fb.group({
+    note: ['', Validators.maxLength(200)],
+    theme: ['nook']
+  });
+
+  themes = [
+    { id: 'nook', label: 'Nook Inc.' },
+    { id: 'gyroid', label: 'Gyroid' },
+    { id: 'museum', label: 'Blathers Museum' },
+    { id: 'able', label: 'Able Sisters' }
+  ];
 
   ngOnInit() {
     this.loadImages();
+  }
+
+  toggleNightMode() {
+    this.isNightMode.update(n => !n);
   }
 
   loadImages() {
@@ -30,24 +56,44 @@ export class App implements OnInit {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.uploading.set(true);
-      this.imageService.uploadImage(file).subscribe({
-        next: (newImage) => {
-          this.images.update(prev => [...prev, newImage]);
-          this.uploading.set(false);
-        },
-        error: (err) => {
-          console.error('Upload failed', err);
-          this.uploading.set(false);
-        }
-      });
+      this.selectedFile.set(file);
+      const reader = new FileReader();
+      reader.onload = e => this.selectedFilePreview.set(e.target?.result as string);
+      reader.readAsDataURL(file);
     }
   }
 
-  deleteImage(id: number | undefined) {
+  clearSelection() {
+    this.selectedFile.set(null);
+    this.selectedFilePreview.set(null);
+    this.uploadForm.reset({ theme: 'nook', note: '' });
+  }
+
+  upload() {
+    const file = this.selectedFile();
+    if (!file) return;
+
+    this.uploading.set(true);
+    const formVal = this.uploadForm.value;
+    
+    this.imageService.uploadImage(file, formVal.note || '', formVal.theme || 'nook').subscribe({
+      next: (newImage) => {
+        this.images.update(prev => [...prev, newImage]);
+        this.uploading.set(false);
+        this.clearSelection();
+      },
+      error: (err) => {
+        console.error('Upload failed', err);
+        this.uploading.set(false);
+      }
+    });
+  }
+
+  deleteImage(id: number | undefined, event: Event) {
+    event.stopPropagation();
     if (id === undefined) return;
 
-    if (confirm('Are you sure you want to delete this image?')) {
+    if (confirm('Are you sure you want to delete this mail?')) {
       this.imageService.deleteImage(id).subscribe({
         next: () => {
           this.images.update(prev => prev.filter(img => img.id !== id));
@@ -55,5 +101,19 @@ export class App implements OnInit {
         error: (err) => console.error('Delete failed', err)
       });
     }
+  }
+  
+  toggleCardFlip(id: number | undefined) {
+    if (id === undefined) return;
+    this.flippedCards.update(set => {
+      const newSet = new Set(set);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return newSet;
+    });
+  }
+  
+  isFlipped(id: number | undefined): boolean {
+    return id !== undefined && this.flippedCards().has(id);
   }
 }

@@ -25,8 +25,10 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Image> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        Image savedImage = imageService.uploadImage(file);
+    public ResponseEntity<Image> uploadImage(@RequestParam("file") MultipartFile file, 
+                                             @RequestParam(value = "note", required = false) String note,
+                                             @RequestParam(value = "theme", required = false) String theme) throws IOException {
+        Image savedImage = imageService.uploadImage(file, note, theme);
         return ResponseEntity.ok(savedImage);
     }
 

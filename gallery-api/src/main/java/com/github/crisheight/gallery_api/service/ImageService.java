@@ -20,7 +20,7 @@ public class ImageService {
         this.s3Service = s3Service;
     }
 
-    public Image uploadImage(MultipartFile file) throws IOException {
+    public Image uploadImage(MultipartFile file, String note, String theme) throws IOException {
         String originalFileName = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
 
@@ -32,7 +32,7 @@ public class ImageService {
         String s3Key = uuid + extension;
         s3Service.uploadFile(s3Key, file);
 
-        var image = new Image(originalFileName, s3Key, file.getContentType(), null);
+        var image = new Image(originalFileName, s3Key, file.getContentType(), null, note, theme);
         var savedImage = imageRepository.save(image);
 
         savedImage.setUrl("https://d3kygt2aqhuo2y.cloudfront.net/" + savedImage.getS3Key());

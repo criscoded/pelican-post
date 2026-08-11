@@ -14,9 +14,11 @@ export class ImageService {
     return this.http.get<Image[]>(this.apiUrl);
   }
 
-  uploadImage(file: File): Observable<Image> {
+  uploadImage(file: File, note: string = '', theme: string = ''): Observable<Image> {
     const formData = new FormData();
     formData.append('file', file);
+    if (note) formData.append('note', note);
+    if (theme) formData.append('theme', theme);
     return this.http.post<Image>(`${this.apiUrl}/upload`, formData);
   }
 

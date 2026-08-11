@@ -18,15 +18,19 @@ public class Image {
 
     private String contentType;
     private String url;
+    private String note;
+    private String theme;
 
     public Image() {}
 
     // Hibernate will map this to snake_case in Postgres
-    public Image(String originalFileName, String s3Key, String contentType, String url) {
+    public Image(String originalFileName, String s3Key, String contentType, String url, String note, String theme) {
         this.originalFileName = originalFileName;
         this.s3Key = s3Key;
         this.contentType = contentType;
         this.url = url;
+        this.note = note;
+        this.theme = theme;
     }
 
     // Getters and Setters
@@ -63,6 +67,20 @@ public class Image {
     }
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getNote() {
+        return note;
+    }
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     @Override

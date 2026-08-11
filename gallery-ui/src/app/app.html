@@ -1,16 +1,71 @@
 <div class="app-wrapper">
   <div class="container">
     <header>
-      <h1><i class="ph-fill ph-cloud-lightning"></i> Cloud Spark Gallery</h1>
-      <div class="upload-section">
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" #fileInput hidden>
-        <button class="upload-btn" (click)="fileInput.click()" [disabled]="uploading()">
-          @if(uploading()) {
-            <i class="ph ph-spinner-gap ph-spin"></i> Uploading...
+      <div class="header-top">
+        <h1><i class="ph-fill ph-envelope-simple"></i> Pelican Post</h1>
+        <button class="theme-toggle" (click)="toggleNightMode()">
+          @if(isNightMode()) {
+            <i class="ph-fill ph-moon"></i> Night Shift (Phyllis)
           } @else {
-            <i class="ph-bold ph-upload-simple"></i> Upload Image
+            <i class="ph-fill ph-sun"></i> Day Shift (Pete)
           }
         </button>
+      </div>
+      
+      <div class="mail-desk">
+        <div class="pelican-avatar">
+          @if(isNightMode()) {
+            <div class="avatar phyllis" title="Phyllis"></div>
+          } @else {
+            <div class="avatar pete" title="Pete"></div>
+          }
+        </div>
+        
+        <div class="upload-section">
+          @if(!selectedFile()) {
+            <p class="greeting">
+              @if(isNightMode()) {
+                *Sigh* What do you want? Leave your mail here.
+              } @else {
+                Hello there! Got some mail to send? I'll handle it right away!
+              }
+            </p>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" #fileInput hidden>
+            <button class="upload-btn" (click)="fileInput.click()">
+              <i class="ph-bold ph-paper-plane-tilt"></i> Send a Postcard
+            </button>
+          } @else {
+            <form [formGroup]="uploadForm" (ngSubmit)="upload()" class="compose-form">
+              <div class="preview-area">
+                <img [src]="selectedFilePreview()" alt="Preview" class="thumbnail">
+              </div>
+              <div class="form-fields">
+                <label>
+                  Message:
+                  <textarea formControlName="note" placeholder="Write a note..." rows="3"></textarea>
+                </label>
+                <label>
+                  Stationery:
+                  <select formControlName="theme">
+                    @for(theme of themes; track theme.id) {
+                      <option [value]="theme.id">{{ theme.label }}</option>
+                    }
+                  </select>
+                </label>
+                <div class="actions">
+                  <button type="button" class="cancel-btn" (click)="clearSelection()" [disabled]="uploading()">Cancel</button>
+                  <button type="submit" class="submit-btn" [disabled]="uploading()">
+                    @if(uploading()) {
+                      <i class="ph ph-spinner-gap ph-spin"></i> Sending...
+                    } @else {
+                      <i class="ph-bold ph-paper-plane-right"></i> Send Mail
+                    }
+                  </button>
+                </div>
+              </div>
+            </form>
+          }
+        </div>
       </div>
     </header>
 
@@ -18,24 +73,26 @@
       @if(images().length > 0) {
         <div class="gallery-grid">
         @for(img of images(); track img.id) {
-          <div class="image-card">
-            <div class="image-container">
-              <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
-              <div class="image-overlay"></div>
-            </div>
-            <div class="image-info">
-              <span class="file-name" [title]="img.originalFileName">{{ img.originalFileName }}</span>
-              <button class="delete-btn" (click)="deleteImage(img.id)" title="Delete Image" aria-label="Delete Image">
-                <i class="ph-bold ph-trash"></i>
-              </button>
+          <div class="scene">
+            <div class="postcard" [class.is-flipped]="isFlipped(img.id)" (click)="toggleCardFlip(img.id)">
+              <div class="card-face card-front">
+                <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+              </div>
+              <div class="card-face card-back" [class]="'theme-' + (img.theme || 'nook')">
+                <div class="postmark"></div>
+                <p class="note-text">{{ img.note || 'No message provided.' }}</p>
+                <button class="delete-btn" (click)="deleteImage(img.id, $event)" title="Trash Mail" aria-label="Trash Mail">
+                  <i class="ph-bold ph-trash"></i>
+                </button>
+              </div>
             </div>
           </div>
         }
         </div>
       } @else {
         <div class="empty-msg">
-          <i class="ph-duotone ph-image"></i>
-          <p>No images found.</p>
+          <i class="ph-duotone ph-mailbox"></i>
+          <p>Your mailbox is empty.</p>
         </div>
       }
     </main>
