@@ -2,7 +2,7 @@
   <div class="container">
     <header>
       <div class="header-top">
-        <h1><img src="assets/mail.jpg" alt="Mail" class="title-icon"> Pelican Post</h1>
+        <h1><img src="assets/mail.png" alt="Mail" class="title-icon"> Pelican Post</h1>
         <button class="theme-toggle" (click)="toggleNightMode()">
           @if(isNightMode()) {
             <i class="ph-fill ph-moon"></i> Night Shift (Phyllis)
@@ -13,13 +13,15 @@
       </div>
       
       <div class="mail-desk">
-        <div class="pelican-avatar">
-          @if(isNightMode()) {
-            <div class="avatar phyllis" title="Phyllis"></div>
-          } @else {
-            <div class="avatar pete" title="Pete"></div>
-          }
-        </div>
+        @if(!selectedFile()) {
+          <div class="pelican-avatar">
+            @if(isNightMode()) {
+              <div class="avatar phyllis" title="Phyllis"></div>
+            } @else {
+              <div class="avatar pete" title="Pete"></div>
+            }
+          </div>
+        }
         
         <div class="upload-section">
           @if(!selectedFile()) {
@@ -36,8 +38,15 @@
             </button>
           } @else {
             <form [formGroup]="uploadForm" (ngSubmit)="upload()" class="compose-form">
-              <div class="preview-area">
-                <img [src]="selectedFilePreview()" alt="Preview" class="thumbnail">
+              <div class="preview-area scene" (click)="previewFlipped = !previewFlipped" title="Click to flip!">
+                <div class="postcard" [class.is-flipped]="previewFlipped">
+                  <div class="card-face card-front">
+                    <img [src]="selectedFilePreview()" alt="Preview" style="width:100%; height:100%; object-fit:cover;">
+                  </div>
+                  <div class="card-face card-back" [class]="'theme-' + (uploadForm.value.theme || 'airmail')">
+                    <p class="note-text">{{ uploadForm.value.note || 'Preview...' }}</p>
+                  </div>
+                </div>
               </div>
               <div class="form-fields">
                 <label>

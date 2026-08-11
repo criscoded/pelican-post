@@ -20,7 +20,8 @@ export class App implements OnInit {
 
   images = signal<Image[]>([]);
   uploading = signal(false);
-  isNightMode = signal(false);
+  isNightMode = signal<boolean>(false);
+  previewFlipped = false;
   selectedFile = signal<File | null>(null);
   selectedFilePreview = signal<string | null>(null);
   
@@ -68,6 +69,7 @@ export class App implements OnInit {
   clearSelection() {
     this.selectedFile.set(null);
     this.selectedFilePreview.set(null);
+    this.previewFlipped = false;
     this.uploadForm.reset({ theme: 'airmail', note: '' });
   }
 
@@ -83,6 +85,7 @@ export class App implements OnInit {
         this.images.update(prev => [...prev, newImage]);
         this.uploading.set(false);
         this.clearSelection();
+        this.previewFlipped = false;
       },
       error: (err) => {
         console.error('Upload failed', err);

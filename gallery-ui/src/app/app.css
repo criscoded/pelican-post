@@ -97,17 +97,17 @@
 .title-icon {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  object-fit: contain;
 }
 
 .avatar.pete {
-  background-image: url('/assets/pete.jpg');
+  background-image: url('/assets/pete.png');
+  background-color: #a7f3d0;
 }
 
 .avatar.phyllis {
-  background-image: url('/assets/phyllis.jpg');
+  background-image: url('/assets/phyllis.png');
+  background-color: #fbcfe8;
 }
 
 .upload-section {
@@ -152,13 +152,20 @@
   gap: 1.5rem;
   align-items: flex-start;
 }
-.preview-area .thumbnail {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 4px solid var(--accent-color);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.preview-area.scene {
+  width: 320px;
+  height: auto;
+  aspect-ratio: 4/3;
+  margin: 0;
+}
+.preview-area.scene .card-back {
+  padding: 1rem;
+  border-width: 10px;
+}
+.preview-area.scene .note-text {
+  font-size: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
 }
 .form-fields {
   flex: 1;
@@ -303,14 +310,12 @@
   background-image: radial-gradient(circle at 20px 20px, #fff 10px, transparent 11px),
                     radial-gradient(circle at 50px 50px, #fff 10px, transparent 11px);
   background-size: 80px 80px;
-  color: #fff;
 }
 .theme-star {
   background: #1e1b4b;
   background-image: radial-gradient(circle at 20px 20px, #fde047 3px, transparent 4px),
                     radial-gradient(circle at 60px 40px, #fde047 2px, transparent 3px);
   background-size: 100px 100px;
-  color: #fff;
 }
 .theme-melody {
   background: #fdf2f8;
