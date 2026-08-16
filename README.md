@@ -1,124 +1,118 @@
 # Pelican Post
-A gallery application where users can upload images with notes that get turned into interactive postcards
 
-# Architecture Overview
+**Pelican Post** is a full-stack gallery application that transforms user-uploaded images and personalized notes into interactive digital postcards. 
 
-The application is split into two distinct layers:
+---
 
-* Backend (Spring Boot): A robust RESTful API handling business logic, data persistence, and security
+## Architecture Overview
 
-* Frontend (React): A dynamic, client-side interface that consumes the Spring API, providing a seamless user experience
+The application is built on a decoupled architecture, ensuring strict separation of concerns, independent scalability, and optimized media delivery:
 
-# Tech Stack
+*   **Backend (Spring Boot):** A robust RESTful API that serves as the strict gatekeeper for business logic, relational data persistence, and enterprise-level security.
+*   **Frontend (React):** A dynamic, client-side interface that consumes the Spring API to deliver a seamless and responsive user experience.
+*   **Content Delivery (AWS):** Media assets are securely stored and served via cloud infrastructure to maximize throughput and minimize time-to-first-byte (TTFB).
 
-**Backend**
+---
 
-* Spring Boot: Core application framework
+## Tech Stack
 
-* Spring Data JPA: For streamlined database interactions and ORM
+### Backend
+*   **Spring Boot:** Core enterprise application framework.
+*   **Spring Data JPA & Hibernate:** Streamlined Object-Relational Mapping (ORM) and database interactions.
+*   **Spring Security:** Comprehensive authentication, authorization, and session safeguarding.
+*   **PostgreSQL:** Robust relational database for persistent state management.
+*   **Maven:** Dependency management and automated build execution.
 
-* Spring Security: Enterprise-level authentication and authorization
+### Frontend
+*   **React:** Component-driven user interface development.
+*   **Tailwind CSS:** Utility-first styling for a highly responsive, modern layout.
+*   **Axios:** Asynchronous HTTP client for seamless API communication.
+*   **React Router:** Client-side state and navigation management.
 
-* PostgreSQL: Relational database for persistent storage
+### Cloud & Infrastructure
+*   **AWS S3 & Amazon CloudFront:** Optimized cloud storage and Content Delivery Network (CDN) integration for high-speed global media delivery.
 
-* Maven: Dependency management and build automation
+---
 
-**Frontend**
+## Key Features
 
-* React: Component-based UI development
+*   **RESTful API Integration:** Clean, thoroughly documented endpoints managing all gallery CRUD operations.
+*   **Optimized Media Delivery:** Integration with AWS S3 and CloudFront to ensure high-throughput image hosting and rapid rendering. 
+*   **Decoupled & Scalable Design:** Complete separation between the React client and Java server, allowing for independent deployment pipelines and easier maintenance.
+*   **Enterprise-Grade Security:** Leverages Spring Security and JWTs to isolate server-side execution and securely manage user sessions and image data.
+*   **Persistent Data Integrity:** Fully integrated PostgreSQL database managed via JPA/Hibernate to ensure reliable data structures and relationships.
 
-* Axios: Handling asynchronous HTTP requests to the backend
+---
 
-* React Router: Managing client-side navigation
+## Architecture Decisions: The Shift to Spring Boot
 
-* Tailwind CSS: Utility-first styling for a modern look
+While Next.js offers excellent speed, the evolving security landscape—specifically regarding React Server Components (RSCs)—prompted a strategic pivot to a Java-based backend. By migrating to Spring Boot, Pelican Post gains:
 
-# Key Features
+*   **Security Isolation:** The backend operates as an independent, strict gatekeeper, significantly mitigating risks associated with server-side execution vulnerabilities.
+*   **Ecosystem Maturity:** Access to battle-tested, proven libraries for complex security and relational database management.
+*   **Type Safety & Maintainability:** Applying SOLID principles within a strongly typed Java environment ensures the codebase remains robust and clean as the feature set expands.
+*   **Enhanced Portability:** A clear architectural boundary that allows the frontend interface to be overhauled or swapped entirely without disrupting core server logic.
+*   **Industry Standards:** Aligns the project with the standard, high-performance enterprise stacks utilized by large-scale technology organizations.
 
-* Decoupled Design: Complete separation of the client and server, allowing for independent scaling and maintenance
+---
 
-* RESTful API: Clean, documented endpoints for gallery operations (CRUD)
+## Getting Started
 
-* Enhanced Security: Leveraging Spring Security to safeguard image data and user sessions
+### Backend Setup
 
-* Persistence: Fully integrated PostgreSQL database managed via JPA/Hibernate
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Configure your PostgreSQL and AWS settings in `src/main/resources/application.properties` or `application-local.properties`.
+3. Run the Spring Boot application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-# Getting Started
+### Frontend Setup 
 
-## Backend Setup
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the necessary Node dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite/Webpack development server:
+   ```bash
+   npm start
+   ```
 
-1. Navigate to the /backend directory
+---
 
-2. Configure your PostgreSQL settings in src/main/resources/application.properties
-
-3. Run the application:
-
-
-```Bash```
-```
-./mvnw spring-boot:run
-```
-
-## Frontend Setup 
-
-1. Navigate to the /frontend directory
-
-2. Install dependencies:
-
-```Bash```
-```
-npm install
-```
-
-3. Start the development server:
-
-```Bash```
-```
-npm start
-```
 ## Configuration & Environment Variables
-To run this project locally, you will need to set up the following environment variables. You can create a .env file in the frontend directory and an application-local.properties (or use system env vars) for the backend.
 
-***Backend (Spring Boot)***
+To run this project locally, configure the following environment variables. Use a `.env` file in the frontend directory and an `application-local.properties` file (or system environment variables) for the backend.
 
-These variables allow the application to connect to your database and secure the API
+### Backend Requirements
 
-* DB_URL: The JDBC connection string (e.g., jdbc:postgresql://localhost:5432/gallery_db)
+These variables are required to establish database connections, secure the API, and connect to cloud hosting:
 
-* DB_USERNAME: Your PostgreSQL username
+*   **`DB_URL`**: The JDBC connection string (e.g., `jdbc:postgresql://localhost:5432/gallery_db`).
+*   **`DB_USERNAME`**: Your local or remote PostgreSQL username.
+*   **`DB_PASSWORD`**: Your PostgreSQL password.
+*   **`JWT_SECRET`**: A highly secure, randomized cryptographic string used to sign and verify JSON Web Tokens.
+*   **`AWS_BUCKET`**: The target AWS S3 bucket for hosting user-uploaded image assets.
 
-* DB_PASSWORD: Your PostgreSQL password
+> **Note on CORS:** Ensure your Spring Boot `WebMvcConfigurer` is properly configured to accept Cross-Origin requests from your frontend's local development port (e.g., `http://localhost:5173`).
 
-* JWT_SECRET: A long, random string used to sign and verify JSON Web Tokens
+---
 
-* AWS_BUCKET: Connection for image hosting services
+## API Documentation
 
-* CORS Configuration: Ensure that your Spring Boot WebMvcConfigurer is configured to allow requests from your frontend's origin (e.g., http://localhost:5173) during development
+The Spring Boot backend exposes a strictly structured REST API. Below are the primary operational endpoints:
 
-# Why the switch from Next.js?
-
-While Next.js offers excellent speed, the recent security landscape (specifically regarding RSCs) led to this pivot. By using Spring Boot, the project gains:
-
-* Type Safety: Strong typing across the entire backend
-
-* Mature Ecosystem: Proven libraries for security and database management
-
-* Better Portability: A clear separation that allows the frontend to be swapped or updated without affecting the core logic
-  
-* Security Isolation: The backend serves as a strict gatekeeper, mitigating risks associated with server-side execution vulnerabilities
-
-* Maintainability: Following the SOLID principles in Java ensures the codebase remains clean as features grow
-
-* Industry Standard: Demonstrates proficiency in the standard enterprise stack used by large-scale technology companies
-
-# API Documentation
-
-The backend exposes a structured REST API. Below are the primary endpoints:
-
-|Method|Endpoint|Description|
-|------|--------|-----------|
-|GET|/api/images|Fetch all gallery images|
-|GET|/api/images/{id}|Retrieve specific image metadata|
-|POST|/api/images/upload|Upload a new image (Authenticated)|
-|DELETE|/api/images/{id}|Remove an image from the gallery|
-|POST|/api/auth/login|User authentication and JWT issuance|
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **GET** | `/api/images` | Fetch the complete collection of gallery images |
+| **GET** | `/api/images/{id}` | Retrieve specific metadata for a single image |
+| **POST** | `/api/images/upload` | Upload a new image to the gallery *(Requires Authentication)* |
+| **DELETE** | `/api/images/{id}` | Permanently remove an image from the database and storage |
+| **POST** | `/api/auth/login` | Authenticate a user and issue a secure JWT |
