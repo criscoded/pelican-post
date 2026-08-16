@@ -1,5 +1,5 @@
 # Pelican Post
-A gallery application where users can upload images with notes that get turned into interactive postcards.
+A gallery application where users can upload images with notes that get turned into interactive postcards
 
 # Architecture Overview
 
