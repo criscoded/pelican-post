@@ -1,18 +1,25 @@
 package com.github.crisheight.gallery_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "images")
+@Table(name = "images", indexes = {
+        @Index(name = "idx_images_owner_id", columnList = "owner_id")
+})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Long ownerId;
+
     private String originalFileName;
 
+    @JsonIgnore
     @Column(unique = true, nullable = false)
     private String s3Key;
 
@@ -24,7 +31,8 @@ public class Image {
     public Image() {}
 
     // Hibernate will map this to snake_case in Postgres
-    public Image(String originalFileName, String s3Key, String contentType, String url, String note, String theme) {
+    public Image(Long ownerId, String originalFileName, String s3Key, String contentType, String url, String note, String theme) {
+        this.ownerId = ownerId;
         this.originalFileName = originalFileName;
         this.s3Key = s3Key;
         this.contentType = contentType;
@@ -39,6 +47,13 @@ public class Image {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getOriginalFileName() {
