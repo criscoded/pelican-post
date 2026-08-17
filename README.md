@@ -1,7 +1,7 @@
 # Pelican Post
 A modern rewrite of my previous Next.js gallery, transitioning to a decoupled architecture with a Spring Boot backend and an Angular frontend. This migration prioritizes enterprise-grade security and modularity.
 
-> Development Context: This project serves as a more secure and scalable alternative to the Next.js implementation, addressing concerns around React Server Component vulnerabilities and avoiding the "eggs in one basket," approach of the Vercel ecosystem.
+> Development Context: This project serves as a more secure and scalable alternative to the Next.js implementation, addressing concerns around React Server Component vulnerabilities and managing separated services handed to you with tools like Vercel.
 
 # Architecture Overview
 
