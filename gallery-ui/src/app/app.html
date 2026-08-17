@@ -3,15 +3,27 @@
     <header>
       <div class="header-top">
         <h1><img src="assets/mail.png" alt="Mail" class="title-icon"> Pelican Post</h1>
-        <button class="theme-toggle" (click)="toggleNightMode()">
-          @if(isNightMode()) {
-            <i class="ph-fill ph-moon"></i> Night Shift (Phyllis)
-          } @else {
-            <i class="ph-fill ph-sun"></i> Day Shift (Pete)
+        <div class="header-actions">
+          @if(isAuthenticated() && username()) {
+            <span class="user-chip" title="Logged in as {{ username() }}">
+              <i class="ph-fill ph-user-circle"></i> {{ username() }}
+            </span>
+            <button class="logout-btn" (click)="logout()" title="Sign out">
+              <i class="ph-bold ph-sign-out"></i> Sign Out
+            </button>
           }
-        </button>
+          <button class="theme-toggle" (click)="toggleNightMode()">
+            @if(isNightMode()) {
+              <i class="ph-fill ph-moon"></i> Night Shift (Phyllis)
+            } @else {
+              <i class="ph-fill ph-sun"></i> Day Shift (Pete)
+            }
+          </button>
+        </div>
       </div>
-      
+    </header>
+
+    @if(isAuthenticated()) {
       <div class="mail-desk">
         @if(!selectedFile()) {
           <div class="pelican-avatar">
@@ -22,7 +34,7 @@
             }
           </div>
         }
-        
+
         <div class="upload-section">
           @if(!selectedFile()) {
             <p class="greeting">
@@ -76,34 +88,86 @@
           }
         </div>
       </div>
-    </header>
 
-    <main>
-      @if(images().length > 0) {
-        <div class="gallery-grid">
-        @for(img of images(); track img.id) {
-          <div class="scene">
-            <div class="postcard" [class.is-flipped]="isFlipped(img.id)" (click)="toggleCardFlip(img.id)">
-              <div class="card-face card-front">
-                <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
-              </div>
-              <div class="card-face card-back" [class]="'theme-' + (img.theme || 'airmail')">
-                <div class="postmark"></div>
-                <p class="note-text">{{ img.note || 'No message provided.' }}</p>
-                <button class="delete-btn" (click)="deleteImage(img.id, $event)" title="Trash Mail" aria-label="Trash Mail">
-                  <i class="ph-bold ph-trash"></i>
-                </button>
+      <main>
+        @if(images().length > 0) {
+          <div class="gallery-grid">
+          @for(img of images(); track img.id) {
+            <div class="scene">
+              <div class="postcard" [class.is-flipped]="isFlipped(img.id)" (click)="toggleCardFlip(img.id)">
+                <div class="card-face card-front">
+                  <img [ngSrc]="img.url" [alt]="img.originalFileName" fill>
+                </div>
+                <div class="card-face card-back" [class]="'theme-' + (img.theme || 'airmail')">
+                  <div class="postmark"></div>
+                  <p class="note-text">{{ img.note || 'No message provided.' }}</p>
+                  <button class="delete-btn" (click)="deleteImage(img.id, $event)" title="Trash Mail" aria-label="Trash Mail">
+                    <i class="ph-bold ph-trash"></i>
+                  </button>
+                </div>
               </div>
             </div>
+          }
+          </div>
+        } @else {
+          <div class="empty-msg">
+            <i class="ph-duotone ph-mailbox"></i>
+            <p>Your mailbox is empty.</p>
           </div>
         }
-        </div>
-      } @else {
-        <div class="empty-msg">
-          <i class="ph-duotone ph-mailbox"></i>
-          <p>Your mailbox is empty.</p>
-        </div>
-      }
-    </main>
+      </main>
+    } @else {
+      <div class="auth-desk">
+        <h2>
+          @if(authMode() === 'login') {
+            Pelican Post Office
+          } @else {
+            New Post Office Account
+          }
+        </h2>
+        <p class="auth-subtitle">
+          @if(authMode() === 'login') {
+            Welcome back! Sign in to check your mail.
+          } @else {
+            Create an account — each mailbox is private and only yours to open.
+          }
+        </p>
+
+        <form [formGroup]="authForm" (ngSubmit)="submitAuth()" class="auth-form">
+          <label>
+            Username
+            <input formControlName="username" type="text" autocomplete="username"
+                   placeholder="3-50 characters (letters, numbers, . _ -)">
+          </label>
+          <label>
+            Password
+            <input formControlName="password" type="password" autocomplete="current-password"
+                   placeholder="At least 8 characters">
+          </label>
+
+          @if(authError()) {
+            <p class="auth-error" role="alert">{{ authError() }}</p>
+          }
+
+          <button type="submit" class="submit-btn" [disabled]="authForm.invalid || authSubmitting()">
+            @if(authSubmitting()) {
+              <i class="ph ph-spinner-gap ph-spin"></i> One sec...
+            } @else if(authMode() === 'login') {
+              <i class="ph-bold ph-key"></i> Sign In
+            } @else {
+              <i class="ph-bold ph-plus-circle"></i> Create Account
+            }
+          </button>
+        </form>
+
+        <button class="switch-auth-btn" (click)="switchAuthMode(authMode() === 'login' ? 'register' : 'login')">
+          @if(authMode() === 'login') {
+            New here? Create an account
+          } @else {
+            Already have an account? Sign in
+          }
+        </button>
+      </div>
+    }
   </div>
 </div>
