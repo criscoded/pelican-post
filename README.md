@@ -17,7 +17,7 @@ The application is split into two distinct layers:
 
 * Spring Boot: Core application framework
 
-* Spring Security + JWT (jjwt): Stateless authentication and authorization
+* Spring Security and JWT (jjwt): Stateless authentication and authorization
 
 * Spring Data JPA: For streamlined database interactions and ORM
 
@@ -77,21 +77,21 @@ The UI runs on http://localhost:4200 and proxies `/api` to the backend on http:/
 
 These variables allow the application to connect to your database, secure the API, and reach AWS:
 
-| Env Var | Required | Description |
-|---|---|---|
-| `DB_HOST` | yes | PostgreSQL host (default `localhost`) |
-| `DB_PORT` | yes | PostgreSQL port (default `5432`) |
-| `DB_DATABASE` | yes | Database name (default `gallery_db`) |
-| `DB_USERNAME` | yes | PostgreSQL username (default `gallery`) |
-| `DB_PASSWORD` | yes | PostgreSQL password (default `gallery`) |
-| `JWT_SECRET` | yes | Long random string used to sign JWTs (**min 32 characters**). Generate with `openssl rand -base64 48` |
-| `JWT_EXPIRATION_MS` | no | Token lifetime in ms (default 7 days) |
-| `AWS_BUCKET_NAME` | yes | S3 bucket for image storage |
-| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | yes | AWS credentials |
-| `AWS_REGION` | yes | AWS region (e.g. `us-east-1`) |
-| `CDN_BASE_URL` | yes | CloudFront (or S3 URL) base for images, e.g. `https://xxxxxxxx.cloudfront.net/` |
-| `CORS_ALLOWED_ORIGINS` | no | Comma-separated allowed origins (default `http://localhost:4200,http://localhost:8080`) |
-| `PORT` | no | Server port (default `8080`; Render injects this automatically) |
+| Env Var                                       | Required | Description                                                                                           |
+|-----------------------------------------------|----------|-------------------------------------------------------------------------------------------------------|
+| `DB_HOST`                                     | yes      | PostgreSQL host (default `localhost`)                                                                 |
+| `DB_PORT`                                     | yes      | PostgreSQL port (default `5432`)                                                                      |
+| `DB_DATABASE`                                 | yes      | Database name (default `gallery_db`)                                                                  |
+| `DB_USERNAME`                                 | yes      | PostgreSQL username (default `gallery`)                                                               |
+| `DB_PASSWORD`                                 | yes      | PostgreSQL password (default `gallery`)                                                               |
+| `JWT_SECRET`                                  | yes      | Long random string used to sign JWTs (**min 32 characters**). Generate with `openssl rand -base64 48` |
+| `JWT_EXPIRATION_MS`                           | no       | Token lifetime in ms (default 7 days)                                                                 |
+| `AWS_BUCKET_NAME`                             | yes      | S3 bucket for image storage                                                                           |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | yes      | AWS credentials                                                                                       |
+| `AWS_REGION`                                  | yes      | AWS region (e.g. `us-east-1`)                                                                         |
+| `CDN_BASE_URL`                                | yes      | CloudFront (or S3 URL) base for images, e.g. `https://xxxxxxxx.cloudfront.net/`                       |
+| `CORS_ALLOWED_ORIGINS`                        | no       | Comma-separated allowed origins (default `http://localhost:4200,http://localhost:8080`)               |
+| `PORT`                                        | no       | Server port (default `8080`; Render injects this automatically)                                       |
 
 ## Running in Production (Docker)
 
@@ -122,13 +122,13 @@ docker run -p 8080:8080 \
 
 # API Documentation
 
-|Method|Endpoint|Description|
-|------|--------|-----------|
-|POST|/api/auth/register|Create an account (returns JWT)|
-|POST|/api/auth/login|Authenticate (returns JWT)|
-|GET|/api/images|List your images (Authenticated)|
-|GET|/api/images/{id}|Retrieve one of your images (Authenticated)|
-|POST|/api/images/upload|Upload a new image (Authenticated)|
-|DELETE|/api/images/{id}|Delete one of your images (Authenticated)|
+| Method | Endpoint           | Description                                 |
+|--------|--------------------|---------------------------------------------|
+| POST   | /api/auth/register | Create an account (returns JWT)             |
+| POST   | /api/auth/login    | Authenticate (returns JWT)                  |
+| GET    | /api/images        | List your images (Authenticated)            |
+| GET    | /api/images/{id}   | Retrieve one of your images (Authenticated) |
+| POST   | /api/images/upload | Upload a new image (Authenticated)          |
+| DELETE | /api/images/{id}   | Delete one of your images (Authenticated)   |
 
 All authenticated endpoints require an `Authorization: Bearer <token>` header. Every response is scoped to the authenticated user — attempting to access another user's image returns 404.
